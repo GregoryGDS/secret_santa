@@ -2,7 +2,7 @@ module.exports = (app) => { //app pour affecter toutes les routes
 	const whish_listController = require('../controllers/whish_listController');
 
 	app.route('/user/:user_id/whish_list')
-	.get(whish_listController.get_all_whish)
+	.get(whish_listController.get_all_whishs)
 	.post(whish_listController.create_a_whish);
 
 	app.route('/whish_list/:whish_list_id')

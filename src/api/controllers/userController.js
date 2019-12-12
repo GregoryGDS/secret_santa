@@ -21,7 +21,7 @@ exports.list_all_users = (req, res) => {
 
 exports.create_a_user = (req, res) => {
   let new_user = new User(req.body);
-
+console.log(req);
   new_user.save((error, user) => {
     if(error){
       res.status(500);

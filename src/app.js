@@ -27,10 +27,10 @@ app.use(bodyParser.json());
 
 
 const userRoute = require('./api/routes/userRoute');
-const whishlistRoute = require('./api/routes/whishlistRoute');
+const whish_listRoute = require('./api/routes/whish_listRoute');
 
 
 userRoute(app);
-whishlistRoute(app);
+whish_listRoute(app);
 
 app.listen(port, hostname);

@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let userSchema = new Schema({
-  name_whish: {
+  name_user: {
     type: String,
     required: "Le nom est requis"
   },
