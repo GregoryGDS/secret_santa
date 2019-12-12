@@ -5,7 +5,7 @@ module.exports = (app) => { //app pour affecter toutes les routes
 	.get(whish_listController.get_all_whishs)
 	.post(whish_listController.create_a_whish);
 
-	app.route('/whish_list/:whish_list_id')
+	app.route('/whish_list/:whish_id')
 	.get(whish_listController.get_a_whish)
 	.put(whish_listController.update_a_whish)
 	.delete(whish_listController.delete_a_whish);

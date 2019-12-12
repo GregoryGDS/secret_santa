@@ -12,6 +12,10 @@ let userSchema = new Schema({
   created_at : {
     type: Date,
     default: Date.now
+  },
+  group_id: {
+    type: String,
+    required:true
   }
 });
 

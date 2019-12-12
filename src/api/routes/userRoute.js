@@ -10,4 +10,7 @@ module.exports = (app) => { //app por affecter toutes les routes
 	.get(userController.get_a_user)
 	.put(userController.update_a_user)
 	.delete(userController.delete_a_user);
+
+	app.route('/group/:group_id/user')
+	.get(userController.get_all_user_in_group);
 }

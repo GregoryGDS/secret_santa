@@ -21,7 +21,7 @@ exports.list_all_users = (req, res) => {
 
 exports.create_a_user = (req, res) => {
   let new_user = new User(req.body);
-console.log(req);
+  console.log(req);
   new_user.save((error, user) => {
     if(error){
       res.status(500);
@@ -73,6 +73,22 @@ exports.delete_a_user = (req, res) => {
     else {
       res.status(200);
       res.json({message: "Article supprimé"});
+    }
+  })
+}
+
+
+//affiche tous les users d'un groupe group_id: req.params.group_id
+exports.get_all_user_in_group = (req, res) => {
+  User.find({group_id:req.params.group_id}, (error, user) => {
+    if(error){
+      res.status(500);
+      console.log(error);
+      res.json({message: "Erreur serveur."});
+    }
+    else {
+      res.status(200);
+      res.json(user);
     }
   })
 }

@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 let whish_listSchema = new Schema({
   name_whish: {
     type: String,
-    required: "Le nom est requis"
+    required: "Le nom du souhait est requis"
   },
   created_at : {
     type: Date,

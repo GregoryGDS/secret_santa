@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
-const whish_listModel = require('../models/whish_listModel');
+const groupModel = require('../models/groupModel');
+/*const userModel = require('../models/userModel');*/
 
-const whish_list = mongoose.model("whish_list");
-// req = fonction callback request (wish,get ...)
-// res = response
+const group = mongoose.model("Group");
+// req = fonction callback request (post,get ...)
+// res=statut
 
-exports.get_all_whishs = (req, res) => {
-  whish_list.find({}, (error, whishs) => {
+exports.get_all_groups = (req, res) => {
+  group.find({}, (error, posts) => {
     if(error){
       res.status(500);
       console.log(error);
@@ -14,16 +15,16 @@ exports.get_all_whishs = (req, res) => {
     }
     else {
       res.status(200);
-      res.json(whishs);
+      res.json(posts);
     }
   })
 }
 
-exports.create_a_whish = (req, res) => {
-  req.body.user_id = req.params.user_id;
-  let new_whish = new whish_list(req.body);
+exports.create_a_group = (req, res) => {
+  req.body.group_id = req.params.group_id;
+  let new_group = new group(req.body);
 
-  new_whish.save((error, wish) => {
+  new_group.save((error, post) => {
     if(error){
       res.status(500);
       console.log(error);
@@ -31,13 +32,13 @@ exports.create_a_whish = (req, res) => {
     }
     else {
       res.status(201);
-      res.json(wish);
+      res.json(post);
     }
   })
 }
 // _id => on cherche par id avec id passé en param (req.params.id) 
-exports.get_a_whish = (req, res) => {
-  whish_list.findById(req.params.whish_id, (error, whish) => {
+exports.get_a_group = (req, res) => {
+  group.findById(req.params.group_id, (error, group) => {
     if(error){
       res.status(500);
       console.log(error);
@@ -45,13 +46,13 @@ exports.get_a_whish = (req, res) => {
     }
     else {
       res.status(200);
-      res.json(whish);
+      res.json(group);
     }
   })
 }
 //new:true veut envoi resource modifié
-exports.update_a_whish = (req, res) => {
-  whish_list.findOneAndUpdate({_id: req.params.whish_id}, req.body, {new: true}, (error, whish) => {
+exports.update_a_group = (req, res) => {
+  group.findOneAndUpdate({_id: req.params.group_id}, req.body, {new: true}, (error, group) => {
     if(error){
       res.status(500);
       console.log(error);
@@ -59,14 +60,14 @@ exports.update_a_whish = (req, res) => {
     }
     else {
       res.status(200);
-      res.json(whish);
+      res.json(group);
     }
   })
 }
 
 //req.params = param en url
-exports.delete_a_whish = (req, res) => {
-  whish_list.remove({_id: req.params.whish_id}, (error) => {
+exports.delete_a_group = (req, res) => {
+  group.remove({_id: req.params.group_id}, (error) => {
     if(error){
       res.status(500);
       console.log(error);
@@ -74,7 +75,7 @@ exports.delete_a_whish = (req, res) => {
     }
     else {
       res.status(200);
-      res.json({message: "Souhait supprimé"});
+      res.json({message: "Groupe supprimé"});
     }
   })
 }
