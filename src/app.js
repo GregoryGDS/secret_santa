@@ -17,20 +17,20 @@ const mongooseParams={
 	useCreateIndex:true
 }
 
-mongoose.connect('mongodb://mongo/apinodeipssi', mongooseParams);
-/*mongodb.//mongo/nomBDD => mongo=nom du container*/
-//mongoose.connect('mongodb://localhost/apinodeipssi', mongooseParams); //windows et pas docker
+mongoose.connect('mongodb://mongo_santa/apinodesantana', mongooseParams);
+/*mongodb.//mongo_santa/nomBDD => mongo_santa=nom du container*/
+//mongoose.connect('mongodb://localhost/apinodesantana', mongooseParams); //windows ET pas docker
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
 
-const postRoute = require('./api/routes/postRoute');
-const commentRoute = require('./api/routes/commentRoutes');
+const userRoute = require('./api/routes/userRoute');
+const whishlistRoute = require('./api/routes/whishlistRoute');
 
 
-postRoute(app);
-commentRoute(app);
+userRoute(app);
+whishlistRoute(app);
 
 app.listen(port, hostname);

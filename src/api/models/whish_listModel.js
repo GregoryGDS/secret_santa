@@ -1,22 +1,18 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-let commentSchema = new Schema({
-  name: {
+let whish_listSchema = new Schema({
+  name_whish: {
     type: String,
     required: "Le nom est requis"
-  },
-  message: {
-    type: String,
-    required: "Le message est requis"
   },
   created_at : {
     type: Date,
     default: Date.now
   },
-  post_id: {
+  user_id: {
     type: String
   }
 });
 
-module.exports = mongoose.model('Comment', commentSchema);
+module.exports = mongoose.model('whish_list', whish_listSchema);

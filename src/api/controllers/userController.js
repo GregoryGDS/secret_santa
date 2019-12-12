@@ -1,9 +1,12 @@
 const mongoose = require('mongoose');
-const postModel = require('../models/postModels');
-const Post = mongoose.model("Post");
+const userModel = require('../models/userModel');//recupère ce qu'on a export
 
-exports.list_all_posts = (req, res) => {
-  Post.find({}, (error, posts) => {
+const User = mongoose.model("User");//User nom donnée dans model
+// req = fonction callback request (user,get ...)
+// res=statut
+
+exports.list_all_users = (req, res) => {
+  User.find({}, (error, users) => {
     if(error){
       res.status(500);
       console.log(error);
@@ -11,43 +14,29 @@ exports.list_all_posts = (req, res) => {
     }
     else {
       res.status(200);
-      res.json(posts);
+      res.json(users);
     }
   })
 }
 
-exports.create_a_post = (req, res) => {
-  let new_post = new Post(req.body);
+exports.create_a_user = (req, res) => {
+  let new_user = new User(req.body);
 
-  new_post.save((error, post) => {
+  new_user.save((error, user) => {
     if(error){
       res.status(500);
       console.log(error);
       res.json({message: "Erreur serveur."});
     }
     else {
-      res.status(201);
-      res.json(post);
+      res.status(201);//status création
+      res.json(user);
     }
   })
 }
 
-exports.get_a_post = (req, res) => {
-  Post.findById(req.params.post_id, (error, post) => {
-    if(error){
-      res.status(500);
-      console.log(error);
-      res.json({message: "Erreur serveur."});
-    }
-    else {
-      res.status(200);
-      res.json(post);
-    }
-  })
-}
-
-exports.update_a_post = (req, res) => {
-  Post.findOneAndUpdate({_id: req.params.post_id}, req.body, {new: true}, (error, post) => {
+exports.get_a_user = (req, res) => {
+  User.findById(req.params.user_id, (error, user) => {
     if(error){
       res.status(500);
       console.log(error);
@@ -55,13 +44,27 @@ exports.update_a_post = (req, res) => {
     }
     else {
       res.status(200);
-      res.json(post);
+      res.json(user);
     }
   })
 }
 
-exports.delete_a_post = (req, res) => {
-  Post.remove({_id: req.params.post_id}, (error) => {
+exports.update_a_user = (req, res) => {
+  User.findOneAndUpdate({_id: req.params.user_id}, req.body, {new: true}, (error, user) => {
+    if(error){
+      res.status(500);
+      console.log(error);
+      res.json({message: "Erreur serveur."});
+    }
+    else {
+      res.status(200);
+      res.json(user);
+    }
+  })
+}
+
+exports.delete_a_user = (req, res) => {
+  User.remove({_id: req.params.user_id}, (error) => {
     if(error){
       res.status(500);
       console.log(error);
