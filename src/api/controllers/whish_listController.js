@@ -5,8 +5,8 @@ const whish_list = mongoose.model("whish_list");
 // req = fonction callback request (wish,get ...)
 // res = response
 
-exports.get_all_whishs = (req, res) => {
-  whish_list.find({}, (error, whishs) => {
+exports.get_list_whish_from_user = (req, res) => {
+  whish_list.find({user_id:req.params.user_id}, (error, whish) => {
     if(error){
       res.status(500);
       console.log(error);
@@ -14,12 +14,12 @@ exports.get_all_whishs = (req, res) => {
     }
     else {
       res.status(200);
-      res.json(whishs);
+      res.json(whish);
     }
   })
 }
 
-exports.create_a_whish = (req, res) => {
+exports.create_a_whish_from_user = (req, res) => {
   req.body.user_id = req.params.user_id;
   let new_whish = new whish_list(req.body);
 
@@ -35,6 +35,7 @@ exports.create_a_whish = (req, res) => {
     }
   })
 }
+
 // _id => on cherche par id avec id passé en param (req.params.id) 
 exports.get_a_whish = (req, res) => {
   whish_list.findById(req.params.whish_id, (error, whish) => {
@@ -49,6 +50,7 @@ exports.get_a_whish = (req, res) => {
     }
   })
 }
+
 //new:true veut envoi resource modifié
 exports.update_a_whish = (req, res) => {
   whish_list.findOneAndUpdate({_id: req.params.whish_id}, req.body, {new: true}, (error, whish) => {
