@@ -18,7 +18,7 @@ exports.list_all_users = (req, res) => {
     }
   })
 }
-
+//.save() = stockage de l'objet en bdd
 exports.create_a_user = (req, res) => {
   let new_user = new User(req.body);
   console.log(req);
@@ -78,9 +78,9 @@ exports.delete_a_user = (req, res) => {
 }
 
 
-//affiche tous les users d'un groupe group_id: req.params.group_id
+//affiche tous les users d'un groupe name_group: req.params.name_group
 exports.get_all_user_in_group = (req, res) => {
-  User.find({group_id:req.params.group_id}, (error, user) => {
+  User.find({name_group:req.params.name_group}, (error, user) => {
     if(error){
       res.status(500);
       console.log(error);

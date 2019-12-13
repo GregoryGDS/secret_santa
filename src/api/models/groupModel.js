@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 let groupSchema = new Schema({
   name_group: {
     type: String,
-    required: "Le nom du groupe est requis"
+    required: "Le nom du groupe est requis",
+    unique: true
   },
   created_at : {
     type: Date,

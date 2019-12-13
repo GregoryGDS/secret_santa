@@ -13,7 +13,7 @@ let userSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  group_id: {
+  name_group: {
     type: String,
     required:true
   }

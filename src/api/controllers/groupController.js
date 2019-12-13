@@ -38,7 +38,7 @@ exports.create_a_group = (req, res) => {
 }
 // _id => on cherche par id avec id passé en param (req.params.id) 
 exports.get_a_group = (req, res) => {
-  group.findById(req.params.group_id, (error, group) => {
+  group.findOne({name_group:req.params.name_group}, (error, group) => {
     if(error){
       res.status(500);
       console.log(error);
@@ -52,7 +52,7 @@ exports.get_a_group = (req, res) => {
 }
 //new:true veut envoi resource modifié
 exports.update_a_group = (req, res) => {
-  group.findOneAndUpdate({_id: req.params.group_id}, req.body, {new: true}, (error, group) => {
+  group.findOneAndUpdate({name_group: req.params.name_group}, req.body, {new: true}, (error, group) => {
     if(error){
       res.status(500);
       console.log(error);
@@ -67,7 +67,7 @@ exports.update_a_group = (req, res) => {
 
 //req.params = param en url
 exports.delete_a_group = (req, res) => {
-  group.remove({_id: req.params.group_id}, (error) => {
+  group.remove({name_group: req.params.name_group}, (error) => {
     if(error){
       res.status(500);
       console.log(error);
