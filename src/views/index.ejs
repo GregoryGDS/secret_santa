@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>Test Secret Santa</title>
+
+    </head>
+
+    <body>
+
+                                <!-- SECTION GESTION DES UTILISATEURS -->
+    <section id="section_user">
+        <h1>Gestion des utilisateurs</h1>
+
+        <h2>Ajouter un utilisateur</h2>
+        <form action ="/users" method="post" id="new_santa">
+            <input type="text" name="nom_user" id="nom_user" placeholder="Entrez un nom" autocomplete="off"/>
+            <select id="group_user" name="group_user">
+                <option value="">-- Assigner un groupe --</option>
+            </select>
+            <input type="submit" id="envoi_name" value="Envoyer"/>
+        </form>
+    </br>
+
+        <div id="divAddUser"></div>
+
+        <h2>Obtenir un utilisateur avec un id</h2>
+        <form action="/users" method="GET" id="get_santa">
+            <input type="text" name="id_user" id="id_user" placeholder="Entrez un ID utilisateur" autocomplete="off"/>
+            <input type="submit" id="envoi_name" value="Envoyer"/>
+        </form>
+        </br>
+
+        <div id="maDiv"></div>
+
+        <h2>Modifier un utilisateur avec un id</h2>
+        <form action="/users" method="PUT" id="update_santa">
+            <input type="text" name="id_user" id="id_user_update" placeholder="Entrez un ID" autocomplete="off"/>
+            <input type="text" name="update_name" id="update_name" placeholder="Entrez un nom" autocomplete="off"/>
+            <input type="submit" id="envoi_update" value="Envoyer"/>
+        </form>
+
+    </section>
+
+                                <!-- SECTION GESTION DES GROUPES -->
+
+    <section id="section_group">
+
+        <h1>Gestion des groupes</h1>
+
+        <h2>Ajouter un nouveau groupe</h2>
+        <form action ="/group" method="POST" id="new_group">
+            <input type="text" name="nom_group" id="nom_group" placeholder="Entrez un nom" autocomplete="off"/>
+            <input type="submit" id="envoi_name" value="Envoyer"/>
+        </form>
+
+        <div id="divAddGroup"></div>
+
+        <h2>Voir les membres d'un groupe</h2>
+        <form action ="/group" method="GET" id="group_users">
+        <select id="group_list" name="group_list">
+            <option value="">-- Choisir un groupe --</option>
+            <input type="submit" id="envoi_liste" value="Envoyer"/>
+        </select>
+        </form>
+
+        <div id="listusers"></div>
+    </section>
+
+                                <!-- SECTION GESTION DES SOUHAITS -->
+
+        <section id="section_whish">
+
+        <h2>Assigner un souhait</h2>
+        <form action ="/whish_list" method="post" id="new_whish">
+            <input type="text" name="id_user" id="user_id_whish" placeholder="Entrez un id utilisateur" autocomplete="off"/>
+            <input type="text" name="whish_user" id="whish_user" placeholder="Entrez un souhait" autocomplete="off"/>
+            <input type="submit" id="envoi_whish" value="Envoyer"/>
+        </form>
+
+        <div id="getWhishUser"></div>
+
+        <h2>Lister les souhaits d'un utilisateur</h2>
+        <form action ="/whish_list" method="post" id="whish_list">
+            <input type="text" name="id_user" id="user_id_whishlist" placeholder="Entrez un id utilisateur" autocomplete="off"/>
+            <input type="submit" id="envoi_whish" value="Envoyer"/>
+        </form>
+
+        <div id="whishList"></div>
+
+        </section>
+
+                                <!-- SCRIPT JS  -->
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script>
+
+
+            // TEST ADD ONE USER
+
+
+$("#new_santa").submit(function(e) {
+
+e.preventDefault();
+var port = 3000;
+var form = $(this);
+var nameUser = $("#nom_user").val();
+var groupUser = $( "#group_user").val();
+var url = 'http://192.168.99.100:' + port + form.attr('action') + '/';
+
+$.ajax({
+            type: "POST",
+            url: url,
+            data: {name_user: nameUser, name_group: groupUser},
+            success: newUser,
+            });
+
+function newUser(data)
+{
+    {$('#divAddUser').empty().append('Nouvel utilisateur créé !</p>' + 'Nom : '
+    + data.name_user
+    + ' Groupe : ' + data.name_group)}                              
+            }
+});
+
+            // TEST GET ONE USER
+$("#get_santa").submit(function(e) {
+
+e.preventDefault();
+var port = 3000;
+var form = $(this);
+var id = $("#id_user").val();
+var url = 'http://192.168.99.100:' + port + form.attr('action') + '/' + id;
+
+$.ajax({
+            type: "GET",
+            url: url,
+            data: form.serialize(),
+            success: getUser,
+            });
+
+function getUser(data){
+    {$('#maDiv').empty().append('Nom : ' + data.name_user + ' | Groupe : ' + data.name_group)}                              
+            }
+});
+
+            // TEST UPDATE ONE USER
+$("#update_santa").submit(function(e) {
+
+e.preventDefault();
+        var port = 3000;
+        var form = $(this);
+        var id = $("#id_user_update").val();
+        var newName = $("#update_name").val();
+        
+        var url = 'http://192.168.99.100:' + port + form.attr('action') + '/' + id; // + '?name=' + newName + '&wish=' + newWish;
+        console.log(url);
+        console.log(id);
+
+$.ajax({
+            type: "PUT",
+            url: url,
+            data: {name_user: newName},
+            success: url,
+            });
+});
+
+
+
+            // --------------------- GESTION DES GROUPES ------------------------
+
+
+
+            // TEST GET * GROUPS
+            
+            let get = $.getJSON( 'http://192.168.99.100:3000/group' , function(getGroups)
+                {
+                    let select = document.getElementById('group_user');
+                
+                    getGroups.forEach(element => 
+                        {
+                            let option = document.createElement('option');
+                            option.innerText = element['name_group'];
+                            select.appendChild(option);
+                            
+                        });
+                    });
+
+            // TEST ADD ONE GROUP
+
+            $("#new_group").submit(function(e) {
+
+        e.preventDefault();
+        var port = 3000;
+        var form = $(this);
+        var groupName = $("#nom_group").val();
+        var url = 'http://192.168.99.100:' + port + form.attr('action') + '/';
+        console.log('test ' + url);
+
+        $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: {name_group: groupName},
+                    success: newGroup,
+                    });
+
+        function newGroup(data){
+            {$('#divAddGroup').empty().append('Nouveau groupe créé !</p>' + 'Nom : '
+            + data.name_group)}                              
+                    }
+        });
+
+            // TEST GET GROUP MEMBERS
+
+            let getGroups = $.getJSON( 'http://192.168.99.100:3000/group' , function(getGroupsNames)
+                {
+                    let listGroups = document.getElementById('group_list');
+                    getGroupsNames.forEach(element => 
+                        {
+                            let option = document.createElement('option');
+                            option.innerText = element['name_group'];
+                            listGroups.appendChild(option);
+                            
+                        });
+                    });
+
+                    $("#group_users").submit(function(e) {
+
+        e.preventDefault();
+        var port = 3000;
+        var form = $(this);
+        var groupName = $("#group_list").val();
+        var url = 'http://192.168.99.100:' + port + form.attr('action') + '/' + groupName + '/user';
+
+        $.ajax({
+                    type: "GET",
+                    url: url,
+                    data: {name_group: groupName},
+                    success: getGroupUsers,
+                    });
+                    
+        function getGroupUsers(data){
+            let members = $.getJSON( 'http://192.168.99.100:3000/group/' + groupName + '/user', function(getGroupMembers)
+                {
+                    let listGroups = document.getElementById('listusers');
+                    listGroups.innerHTML = "";
+                    getGroupMembers.forEach(data => 
+                        {
+                            let divMember = document.createElement('div');
+                            divMember.innerText = data['name_user'];
+                            listGroups.appendChild(divMember);
+                            
+                        });
+                    });                         
+                }
+                
+});
+
+                     // --------------------- GESTION DES SOUHAITS ------------------------
+
+                    // GESTION AJOUTER UN SOUHAIT À UN UTILISATEUR
+
+                    $("#new_whish").submit(function(e) {
+
+e.preventDefault();
+var port = 3000;
+var form = $(this);
+var idUser = $("#user_id_whish").val();
+var whishUser = $( "#whish_user").val();
+var url = 'http://192.168.99.100:' + port + form.attr('action') + '/' + idUser;
+
+$.ajax({
+            type: "POST",
+            url: url,
+            data: {user_id: idUser, name_whish: whishUser},
+            success: newUserWhish,
+            });
+
+function newUserWhish(data)
+{
+    {$('#getWhishUser').empty().append('L\'utilisateur souhaite : '
+    + whishUser)}                              
+            }
+});
+
+        // --------------------------------------------------------------------------------------
+
+                            // GESTION LISTER LES SOUHAITS D'UN UTILISATEUR
+                            // PAS TERMINÉ À TEMPS - 13/12 23:47
+
+        </script>
+    </body>
+</html>
