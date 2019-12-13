@@ -1,5 +1,9 @@
 const mongoose = require('mongoose');
 const groupModel = require('../models/groupModel');
+
+const userController = require('../controllers/userController');
+const User = mongoose.model("User");//User nom donnée dans model
+
 /*const userModel = require('../models/userModel');*/
 
 const group = mongoose.model("Group");
@@ -77,5 +81,28 @@ exports.delete_a_group = (req, res) => {
       res.status(200);
       res.json({message: "Groupe supprimé"});
     }
+  })
+}
+
+exports.shuffleTotal = (req, res) => {
+  let all_groups = group.find({}); // all_groups contient la promise
+  all_groups.then(groupe => { // une fois que la promise est éxectuer
+
+    var all_group_user = [];
+    groupe.forEach(one_groupe => {
+      let one_user_group=[];
+      User.find({name_group:one_groupe['name_group']}).then(user_group => {
+        user_group.forEach(one_user => {
+          //console.log(one_user['name_group']+' : '+one_user['name_user']);
+          one_user_group.push(one_user['name_user']);
+        });//fin foreach
+        return one_user_group;
+      })
+      .then(resultat => {
+        all_group_user.push(resultat);
+      })
+
+    });//fin foreach
+    console.log(all_group_user);
   })
 }
