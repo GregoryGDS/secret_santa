@@ -1,9 +1,14 @@
 const express = require('express');
 const app = express();
 
+
 const hostname = '0.0.0.0';
 const port = 3000;
-
+/*
+app.get('/', function(req,res) {
+	res.render('/../front/index.ejs');
+});
+*/
 const mongoose = require('mongoose');
 //bibliothèque ODM (Object Data Modeling) pour MongoDB et Node.js.
 //Sert de passerelle entre serveur Node.js et serveur MongoDB.
@@ -17,20 +22,19 @@ const mongooseParams={
 	useCreateIndex:true
 }
 
-mongoose.connect('mongodb://mongo/apinodeipssi', mongooseParams);
-/*mongodb.//mongo/nomBDD => mongo=nom du container*/
-//mongoose.connect('mongodb://localhost/apinodeipssi', mongooseParams); //windows et pas docker
+mongoose.connect('mongodb://mongo_santa/apinodesantana', mongooseParams);
+/*mongodb.//mongo_santa/nomBDD => mongo_santa=nom du container*/
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
+const groupRoute = require('./api/routes/groupRoute');
+const userRoute = require('./api/routes/userRoute');
+const whish_listRoute = require('./api/routes/whish_listRoute');
 
-const postRoute = require('./api/routes/postRoute');
-const commentRoute = require('./api/routes/commentRoutes');
-
-
-postRoute(app);
-commentRoute(app);
+groupRoute(app);
+userRoute(app);
+whish_listRoute(app);
 
 app.listen(port, hostname);

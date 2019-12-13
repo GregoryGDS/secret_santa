@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
-const commentModels = require('../models/commentModels');
+const groupModel = require('../models/groupModel');
+/*const userModel = require('../models/userModel');*/
 
-const Comment = mongoose.model("Comment");
+const group = mongoose.model("Group");
 // req = fonction callback request (post,get ...)
 // res=statut
 
-exports.get_all_comments = (req, res) => {
-  Comment.find({post_id: req.params.post_id}, (error, posts) => {
+exports.get_all_groups = (req, res) => {
+  group.find({}, (error, posts) => {
     if(error){
       res.status(500);
       console.log(error);
@@ -19,11 +20,11 @@ exports.get_all_comments = (req, res) => {
   })
 }
 
-exports.create_a_comment = (req, res) => {
-  req.body.post_id = req.params.post_id;
-  let new_comment = new Comment(req.body);
+exports.create_a_group = (req, res) => {
+  req.body.group_id = req.params.group_id;
+  let new_group = new group(req.body);
 
-  new_comment.save((error, post) => {
+  new_group.save((error, post) => {
     if(error){
       res.status(500);
       console.log(error);
@@ -36,8 +37,8 @@ exports.create_a_comment = (req, res) => {
   })
 }
 // _id => on cherche par id avec id passé en param (req.params.id) 
-exports.get_a_comment = (req, res) => {
-  Comment.findById(req.params.comment_id, (error, comment) => {
+exports.get_a_group = (req, res) => {
+  group.findOne({name_group:req.params.name_group}, (error, group) => {
     if(error){
       res.status(500);
       console.log(error);
@@ -45,13 +46,13 @@ exports.get_a_comment = (req, res) => {
     }
     else {
       res.status(200);
-      res.json(comment);
+      res.json(group);
     }
   })
 }
 //new:true veut envoi resource modifié
-exports.update_a_comment = (req, res) => {
-  Comment.findOneAndUpdate({_id: req.params.comment_id}, req.body, {new: true}, (error, comment) => {
+exports.update_a_group = (req, res) => {
+  group.findOneAndUpdate({name_group: req.params.name_group}, req.body, {new: true}, (error, group) => {
     if(error){
       res.status(500);
       console.log(error);
@@ -59,14 +60,14 @@ exports.update_a_comment = (req, res) => {
     }
     else {
       res.status(200);
-      res.json(comment);
+      res.json(group);
     }
   })
 }
 
-//req.params param en url
-exports.delete_a_comment = (req, res) => {
-  Comment.remove({_id: req.params.comment_id}, (error) => {
+//req.params = param en url
+exports.delete_a_group = (req, res) => {
+  group.remove({name_group: req.params.name_group}, (error) => {
     if(error){
       res.status(500);
       console.log(error);
@@ -74,7 +75,7 @@ exports.delete_a_comment = (req, res) => {
     }
     else {
       res.status(200);
-      res.json({message: "Commentaires supprimé"});
+      res.json({message: "Groupe supprimé"});
     }
   })
 }
